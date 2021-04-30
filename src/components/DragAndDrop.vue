@@ -5,7 +5,7 @@
                 <div class="card-panel teal">
                     <div @dragover="dragover" @dragleave="dragleave" @drop="drop">
                         <input type="file" name="FichierListe" id="assetsFieldHandle"
-                               @change="onChange" ref="file" accept=".csv,.xls,.xlsx"/>
+                               @change="onChange" ref="liste" accept=".csv,.xls,.xlsx"/>
 
                         <label for="assetsFieldHandle">
                             <div class="row">
@@ -14,13 +14,9 @@
                                 </h6>
                             </div>
                         </label>
-                        <ul v-if="this.filelist.length" v-cloak class="center">
-                            <li v-for="file in filelist" v-bind:key="file">
-                                {{ file.name }}
-                                <button type="button" @click="remove(filelist.indexOf(file))" title="Remove file">x
-                                </button>
-                            </li>
-                        </ul>
+                        <div v-if="fichier != null" class="namefichier valign-wrapper # ef5350 red lighten-1">
+                            {{fichier.name}} <i class="material-icons close" @click="remove">highlight_off</i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -34,28 +30,25 @@ import axios from "axios"
 
 export default {
     name: "DragAndDrop",
-    delimiters: ['${', '}'], // Avoid Twig conflicts
     data() {
         return {
-            filelist: [] // Store our uploaded files
+            fichier: String
         }
     },
     methods: {
         upload() {
-            console.log("fct upload lancer et il ne se passe rien!");
-            let file = this.$refs.file.files[0];
             let formData = new FormData();
-            formData.append("file", file);
+            formData.append("file", this.fichier);
             axios.post("/Fichierliste", formData)
                 .catch(() => {
                     console.log("erreur");
                 });
         },
         onChange() {
-            this.filelist = [...this.$refs.file.files];
+            this.fichier = this.$refs.liste.files[0];
         },
-        remove(i) {
-            this.filelist.splice(i, 1);
+        remove() {
+            this.fichier = null;
         },
         dragover(event) {
             event.preventDefault();
@@ -72,7 +65,7 @@ export default {
         },
         drop(event) {
             event.preventDefault();
-            this.$refs.file.files = event.dataTransfer.files;
+            this.$refs.liste.files = event.dataTransfer.files;
             this.onChange(); // Trigger the onChange event manually
             // Clean up
             event.currentTarget.classList.add('bg-gray-100');
@@ -101,10 +94,6 @@ export default {
     height: 200px;
 }
 
-[v-cloak] {
-    display: none;
-}
-
 #assetsFieldHandle {
     display: none;
 }
@@ -112,6 +101,13 @@ export default {
 h5, h6 {
     color: black;
     text-align: center;
+}
+.namefichier{
+    justify-content: center;
+}
+.close{
+    cursor: pointer;
+    margin-left: 5px;
 }
 
 </style>

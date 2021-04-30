@@ -2,7 +2,7 @@
     <!-- Modal Structure -->
     <div id="modal1" class="modal">
         <div class="modal-header">
-            <i class="material-icons modal-close">close</i>
+            <i class="material-icons modal-close" @click="close">close</i>
         </div>
         <div class="modal-content">
             <h4>Nouvelle liste</h4>
@@ -14,6 +14,7 @@
                     </div>
                 </div>
                 <div class="row">
+                    <span/>
                     <drag-and-drop ref="drag"/>
                 </div>
             </form>
@@ -39,6 +40,9 @@ export default {
     methods:{
         upload(){
             this.$refs.drag.upload();
+        },
+        close(){
+            this.$refs.drag.fichier = null;
         }
     }
 }
