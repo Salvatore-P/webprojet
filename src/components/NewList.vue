@@ -14,21 +14,14 @@
                     </div>
                 </div>
                 <div class="row">
-                   <!--<div class="file-field input-field">
-                        <div class="btn">
-                            <span><i class="material-icons left">cloud_upload</i> File</span>
-                            <input type="file" accept=".xlsx">
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
-                        </div>
-                    </div>-->
                     <drag-and-drop/>
                 </div>
             </form>
         </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-close btn-flat">Valider</a>
+        <div class="modal-footer center">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Valider
+                <i class="material-icons right">send</i>
+            </button>
         </div>
     </div>
 </template>
@@ -54,12 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <style scoped>
     .modal{
-        height: 60%;
-        margin-top: 10%;
-        width: 50%;
-        left: 25%;
-        right: 25%;
         border-radius: 15px;
+        max-height: none;
     }
     .modal-header{
         padding : 5px;

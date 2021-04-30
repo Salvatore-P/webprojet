@@ -1,21 +1,27 @@
 <template>
     <div>
-        <div @dragover="dragover" @dragleave="dragleave" @drop="drop">
-            <input type="file" multiple name="fields[assetsFieldHandle][]" id="assetsFieldHandle"
-                    @change="onChange" ref="file" accept=".pdf,.jpg,.jpeg,.png" />
+        <div class="row">
+            <div class="col s12">
+                <div class="card-panel teal">
+                    <div @dragover="dragover" @dragleave="dragleave" @drop="drop">
+                        <input type="file"  name="fields[assetsFieldHandle][]" id="assetsFieldHandle"
+                               @change="onChange" ref="file" accept=".csv,.xls,.xlsx" />
 
-            <label for="assetsFieldHandle" >
-                <div>
-                    Explain to our users they can drop files in here
-                    or <span >click here</span> to upload their files
+                        <label for="assetsFieldHandle" >
+                            <div class="row">
+                                <h6> Glisser un fichier (*.csv,*.xls,*.xlsx) ou <h5>appuyer</h5> pour charger votre liste.</h6>
+                            </div>
+                        </label>
+                        <ul  v-if="this.filelist.length" v-cloak class="center">
+                            <li  v-for="file in filelist" v-bind:key="file">
+                                {{ file.name }}<button type="button" @click="remove(filelist.indexOf(file))" title="Remove file">x</button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </label>
-            <ul  v-if="this.filelist.length" v-cloak>
-                <li  v-for="file in filelist" v-bind:key="file">
-                    {{ file.name }}<button type="button" @click="remove(filelist.indexOf(file))" title="Remove file">x</button>
-                </li>
-            </ul>
+            </div>
         </div>
+
     </div>
 </template>
 
@@ -77,6 +83,13 @@ export default {
     }
     [v-cloak] {
         display: none;
+    }
+    #assetsFieldHandle{
+        display: none;
+    }
+    h5,h6{
+        color: black;
+        text-align: center;
     }
 
 </style>
