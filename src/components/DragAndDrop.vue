@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import axios from "axios"
+
 export default {
     name: "DragAndDrop",
     delimiters: ['${', '}'], // Avoid Twig conflicts
@@ -35,6 +37,15 @@ export default {
         }
     },
     methods: {
+         upload(){
+            let file = this.$refs.filelist.files[0];
+            let formData = new FormData();
+            formData.append(file);
+            axios.post("/api",formData)
+                .catch(() => {
+                    console.log("erreur");
+                });
+        },
         onChange() {
             this.filelist = [...this.$refs.file.files];
         },
@@ -68,28 +79,28 @@ export default {
 
 <style scoped>
 
-    .file-wrapper input {
-        position: absolute;
-        top: 0;
-        right: 0; /* not left, because only the right part of the input seems to
+.file-wrapper input {
+    position: absolute;
+    top: 0;
+    right: 0; /* not left, because only the right part of the input seems to
                  be clickable in some browser I can't remember */
-        cursor: pointer;
-        opacity: 0.0;
-        filter: alpha(opacity=0); /* and all the other old opacity stuff you
+    cursor: pointer;
+    opacity: 0.0;
+    filter: alpha(opacity=0); /* and all the other old opacity stuff you
                                  want to support */
-        font-size: 300px; /* wtf, but apparently the most reliable way to make
+    font-size: 300px; /* wtf, but apparently the most reliable way to make
                          a large part of the input clickable in most browsers */
-        height: 200px;
-    }
-    [v-cloak] {
-        display: none;
-    }
-    #assetsFieldHandle{
-        display: none;
-    }
-    h5,h6{
-        color: black;
-        text-align: center;
-    }
+    height: 200px;
+}
+[v-cloak] {
+    display: none;
+}
+#assetsFieldHandle{
+    display: none;
+}
+h5,h6{
+    color: black;
+    text-align: center;
+}
 
 </style>

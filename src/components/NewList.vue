@@ -14,12 +14,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <drag-and-drop/>
+                    <drag-and-drop ref="drag"/>
                 </div>
             </form>
         </div>
         <div class="modal-footer center">
-            <button class="btn waves-effect waves-light" type="submit" name="action">Valider
+            <button class="btn waves-effect waves-light" type="submit" name="action" @click="upload">Valider
                 <i class="material-icons right">send</i>
             </button>
         </div>
@@ -35,6 +35,11 @@ export default {
     components: {DragAndDrop},
     mounted(){
         M.AutoInit();
+    },
+    methods:{
+        upload(){
+            this.$refs.drag.upload();
+        }
     }
 }
 document.addEventListener('DOMContentLoaded', function() {
