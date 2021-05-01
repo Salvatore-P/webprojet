@@ -5,7 +5,7 @@
                 <div class="card-panel teal">
                     <div @dragover="dragover" @dragleave="dragleave" @drop="drop">
                         <input type="file" name="FichierListe" id="assetsFieldHandle"
-                               @change="onChange" ref="liste" accept=".csv,.xls,.xlsx"/>
+                               @change="onChange" ref="liste" accept=".xls,.xlsx"/>
 
                         <label for="assetsFieldHandle">
                             <div class="row">
@@ -14,7 +14,10 @@
                                 </h6>
                             </div>
                         </label>
-                        <div v-if="fichier != null" class="namefichier valign-wrapper # ef5350 red lighten-1">
+                        <div v-if="erreur != null" class="namefichier valign-wrapper red">
+                            {{message}}
+                        </div>
+                        <div v-if="fichier != null" class="namefichier valign-wrapper">
                             {{fichier.name}} <i class="material-icons close" @click="remove">highlight_off</i>
                         </div>
                     </div>
@@ -27,25 +30,51 @@
 
 <script>
 import axios from "axios"
+import M from "materialize-css";
 
 export default {
     name: "DragAndDrop",
     data() {
         return {
-            fichier: String
+            fichier: null,
+            erreur: false,
+            message: null
         }
     },
+    mounted(){
+        M.AutoInit();
+    },
     methods: {
-        upload() {
+        async upload() {
             let formData = new FormData();
             formData.append("file", this.fichier);
-            axios.post("/Fichierliste", formData)
-                .catch(() => {
-                    console.log("erreur");
-                });
+            formData.append("info", "002");
+            try {
+                //await axios.post("/Fichierliste", formData);
+                //await axios.post("/liste", formData);
+                await axios.post("/cool", formData);
+                M.toast({html: 'Le fichier a bien été uploadé',classes: 'light-green accent-3 grey-text text-darken-4'});
+                this.fichier = null;
+                this.$refs.liste.files[0] = null;
+            } catch (err) {
+                M.toast({html: err.response.data.error ,classes: 'red grey-text text-darken-4'});
+            }
+
+
+
         },
         onChange() {
             this.fichier = this.$refs.liste.files[0];
+            this.erreur = false;
+            this.message = null;
+            let type = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/vnd.ms-excel"];
+
+            if(!type.includes(this.fichier.type)){
+                console.log("erreur");
+                this.erreur = true;
+                this.fichier = null;
+                this.message = "Fichier de type excel uniquement";
+            }
         },
         remove() {
             this.fichier = null;

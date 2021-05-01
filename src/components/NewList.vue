@@ -20,7 +20,7 @@
             </form>
         </div>
         <div class="modal-footer center">
-            <button class="btn waves-effect waves-light" type="submit" name="action" @click="upload">Valider
+            <button class="btn "  name="action" @click="upload">Valider
                 <i class="material-icons right">send</i>
             </button>
         </div>
@@ -43,6 +43,8 @@ export default {
         },
         close(){
             this.$refs.drag.fichier = null;
+            this.$refs.drag.erreur= false;
+            this.$refs.drag.message= null;
         }
     }
 }

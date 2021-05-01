@@ -1,42 +1,49 @@
 <template>
     <div>
-        <ul class="sidenav sidenav-fixed #e53935 red darken-1" id="menu">
-            <ul class="collapsible">
+        <ul v-show="!$auth.loading" class="sidenav sidenav-fixed #e53935 red darken-1" id="menu">
+            <ul v-show="$auth.isAuthenticated">
+                <ul class="collapsible">
+                    <li>
+                        <a class="collapsible-header btn">Liste</a>
+                        <div class="collapsible-body #e53935 red darken-1">
+                            <ul>
+                                <li><a href="#modal1"
+                                       class="waves-effect waves-light btn modal-trigger Personalisation sidenav-close">Nouvelle</a>
+                                </li>
+                                <li><a href="#" class="btn Personalisation sidenav-close">Afficher</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="collapsible-header btn">Groupe</a>
+                        <div class="collapsible-body #e53935 red darken-1">
+                            <ul>
+                                <li><a href="#modal2"
+                                       class="waves-effect waves-light btn modal-trigger Personalisation sidenav-close">Nouvelle</a>
+                                </li>
+                                <li><a href="#!" class="btn Personalisation sidenav-close">Afficher</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
                 <li>
-                    <a class="collapsible-header btn">Liste</a>
-                    <div class="collapsible-body #e53935 red darken-1">
-                        <ul>
-                            <li><a href="#modal1"
-                                   class="waves-effect waves-light btn modal-trigger Personalisation sidenav-close">Nouvelle</a>
-                            </li>
-                            <li><a href="#" class="btn Personalisation sidenav-close">Afficher</a></li>
-                        </ul>
-                    </div>
+                    <a href="#" class="btn sidenav-close">Profile</a>
                 </li>
                 <li>
-                    <a class="collapsible-header btn">Groupe</a>
-                    <div class="collapsible-body #e53935 red darken-1">
-                        <ul>
-                            <li><a href="#modal2"
-                                   class="waves-effect waves-light btn modal-trigger Personalisation sidenav-close">Nouvelle</a>
-                            </li>
-                            <li><a href="#!" class="btn Personalisation sidenav-close">Afficher</a></li>
-                        </ul>
-                    </div>
+                    <!-- show logout when authenticated -->
+                    <a @click="logout" class="btn is-dark sidenav-close"><i
+                        class="material-icons">logout</i></a>
                 </li>
             </ul>
-            <li>
-                <a href="#" class="btn sidenav-close">Profile</a>
-            </li>
-            <li v-if="!$auth.loading">
-                <!-- show login when not authenticated -->
-                <a v-if="!$auth.isAuthenticated" @click="login" class="btn is-dark sidenav-close"><i
-                    class="material-icons">login</i></a>
-                <!-- show logout when authenticated -->
-                <a v-if="$auth.isAuthenticated" @click="logout" class="btn is-dark sidenav-close"><i
-                    class="material-icons">logout</i></a>
-            </li>
+            <ul v-if="!$auth.isAuthenticated">
+                <li >
+                    <!-- show login when not authenticated -->
+                    <a @click="login" class="btn is-dark sidenav-close"><i
+                        class="material-icons">login</i></a>
+                </li>
+            </ul>
         </ul>
+
     </div>
 </template>
 
