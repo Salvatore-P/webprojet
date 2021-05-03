@@ -1,8 +1,22 @@
-let express = require('express');
-let multer = require('multer');
+let express = require('express'),
+    multer = require('multer'),
+    mysql = require("mysql"),
+    qs = require("querystring")
 
 
-let app = express();
+let app = express(),
+    db = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: ""
+    })
+
+db.connect( e => {
+    if(e) throw e
+    console.log("Connectée à la base de données !")
+})
+
+
 
 let fileFilter = function (req,file,cb){
     let type = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/vnd.ms-excel"];
@@ -17,14 +31,22 @@ let fileFilter = function (req,file,cb){
 let upload = multer({
     dest: './uploads/',
     fileFilter
-});
+})
 
 
 app.post("/Fichierliste", upload.single("file"), (req, res) =>{
-    console.log(req.file);
-    res.json({"hello" : "nice"});
-
-});
+    console.log(req.body.info);
+    db.query("SELECT * FROM Users", (e, result) => {
+        if(e){
+            res.status(404)
+            res.send("Echec recuperation données")
+        }
+        else{
+            console.log("donnees recuperees !")
+            res.json({donnees : result})
+        }
+    })
+})
 
 app.post("/liste", upload.array("file"), (req, res) =>{
     console.log("tab recu");

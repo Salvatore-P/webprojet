@@ -8,21 +8,30 @@
         </nav>
         </div>
 
-        <menu-p/>
-        <new-list/>
-        <new-group/>
+
 
     </div>
 </template>
 
 <script>
-import NewList from "./NewList";
-import MenuP from "./MenuP";
-import NewGroup from "./NewGroup";
+import { getInstance } from "@/auth/index";
 
 export default {
-    name: "CMenu",
-    components: {NewGroup, MenuP, NewList}
+    name: "HeaderTop",
+    components: {},
+
+    mounted() {
+
+        setTimeout(function(){
+            let con = getInstance();
+            console.log("connecter ?  " +con.isAuthenticated);
+
+            if(con.isAuthenticated) console.log("connecter");
+            else console.log("deconecter");
+        }, 1000);
+
+    }
+
 
 }
 </script>

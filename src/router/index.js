@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import NiewList from '../components/NewList.vue'
+import BarMenuP from '../components/BarMenuP.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/NiewList',
-    name: 'NiewList',
-    component: NiewList
+    path: '/',
+    name: 'BarMenuP',
+    component: BarMenuP
   }
 ]
 

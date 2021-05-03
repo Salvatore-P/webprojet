@@ -1,6 +1,7 @@
 <template>
     <div id="app">
-        <c-menu/>
+        <header-top/>
+        <router-view/>
 
     </div>
 </template>
@@ -11,8 +12,8 @@
 </style>
 
 <script>
-import CMenu from "./components/CMenu";
+import HeaderTop from "./components/HeaderTop";
 export default {
-    components: { CMenu}
+    components: {HeaderTop}
 }
 </script>
