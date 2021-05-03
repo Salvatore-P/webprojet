@@ -32,7 +32,7 @@ import M from "materialize-css";
 import DragAndDrop from "./DragAndDrop";
 
 export default {
-    name: "NiewList",
+    name: "NewList",
     components: {DragAndDrop},
     mounted(){
         M.AutoInit();

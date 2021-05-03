@@ -50,9 +50,10 @@ export default {
             formData.append("file", this.fichier);
             formData.append("info", "002");
             try {
-                //await axios.post("/Fichierliste", formData);
+                await axios.post("/Fichierliste", formData)
+                    .then(data => console.log(data));
                 //await axios.post("/liste", formData);
-                await axios.post("/cool", formData);
+                //await axios.post("/cool", formData);
                 M.toast({html: 'Le fichier a bien été uploadé',classes: 'light-green accent-3 grey-text text-darken-4'});
                 this.fichier = null;
                 this.$refs.liste.files[0] = null;

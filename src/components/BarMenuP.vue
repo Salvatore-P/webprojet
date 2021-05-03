@@ -43,6 +43,8 @@
                 </li>
             </ul>
         </ul>
+        <new-list/>
+        <new-group/>
 
     </div>
 </template>
@@ -50,9 +52,12 @@
 <script>
 
 import M from "materialize-css";
+import NewList from "./NewList";
+import NewGroup from "./NewGroup";
 
 export default {
-    name: "MenuP",
+    name: "BarMenuP",
+    components: {NewGroup, NewList},
     methods: {
         // Log the user in
         login() {

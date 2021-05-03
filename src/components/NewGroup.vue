@@ -23,7 +23,7 @@
                             <div class="input-field">
                                 <select>
                                     <option value="" disabled selected>Choissier la liste source</option>
-                                    <option v-for="liste in optionsList" v-bind:key="liste" :value="liste.source">{{liste.name}}</option>
+                                    <option v-for="liste in optionsList" v-bind:key="liste.source" :value="liste.source">{{liste.name}}</option>
                                 </select>
                                 <label>Materialize Select</label>
                             </div>
