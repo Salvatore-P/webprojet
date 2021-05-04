@@ -5,6 +5,7 @@ let express = require('express'),
 
 
 let app = express(),
+    resulatRequete = '',
     db = mysql.createConnection({
         host: "localhost",
         user: "root",
@@ -35,21 +36,54 @@ let upload = multer({
 })
 
 
+//fonctions
+let insersion = (requete) =>{
+        return db.query(requete, (e, result) => {
+            if(e)
+                return false
+            else{
+                resulatRequete = result
+                return true
+            }
+        })
+    },
+    selection = (requete) =>{
+        return db.query(requete, (e, result) => {
+            if(e)
+                return false
+            else{
+                resulatRequete = result
+                return true
+            }
+        })
+    }
+//`SELECT * FROM users_listes WHERE email = '${email}' AND titre = '${titre}'`
+//`INSERT INTO users_listes values(null, '${email}', '${titre}', '${fichier}')`
 app.post("/upload/liste", upload.single("file"), (req, res) =>{
     let email = req.body.email, 
         titre = req.body.titre, 
         fichier = req.file.filename
-    db.query(`INSERT INTO users_listes values(null, '${email}', '${titre}', '${fichier}')`, (e, result) => {
-        if(e){
-            res.status(400)
-            res.send("Echec recuperation données")
-            console.log("probleme requete")
-        }
+
+    console.log("dlskjdfl : " + selection(`SELECT * FROM users_listes WHERE email = '${email}' AND titre = '${titre}'`))
+    if(selection(`SELECT * FROM users_listes WHERE email = '${email}' AND titre = '${titre}'`)){
+        if(resulatRequete.length === 0){
+            if(insersion(`INSERT INTO users_listes values(null, '${email}', '${titre}', '${fichier}')`)){
+                res.json({donnees : "ok"})
+            }
+            else{
+                res.status(422)
+                .json({error : "probleme base de données"})
+            }
+        } 
         else{
-            console.log("donnees recuperees !")
-            res.json({donnees : result})
-        }
-    })
+            res.status(422)
+            .json({error : "ce nom de liste existe déjà"})   
+        } 
+    }
+    else{
+        res.status(422)
+        .json({error : "probleme base de données"})
+    }
 })
 
 app.post("/liste", upload.array("file"), (req, res) =>{

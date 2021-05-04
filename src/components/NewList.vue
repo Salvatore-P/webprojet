@@ -48,9 +48,8 @@ export default {
                 drag.upload(nom.value)
         },
         close(){
+            this.$refs.nom.value = ""
             this.$refs.drag.fichier = null;
-            this.$refs.drag.erreur= false;
-            this.$refs.drag.message= null;
         }
     }
 }
