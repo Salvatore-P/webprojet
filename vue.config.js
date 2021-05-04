@@ -1,5 +1,6 @@
 module.exports = {
-    devServer:{
-        proxy: "http://localhost:5555"
-    }
-}
+    publicPath: process.env.NODE_ENV === 'production'
+        ? './'
+        : '/',
+    productionSourceMap: false
+};
