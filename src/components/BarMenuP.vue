@@ -68,14 +68,6 @@ export default {
             this.$auth.logout({
                 returnTo: window.location.origin
             });
-        },
-        closeColl() {
-            let elem = document.querySelectorAll('.collapsible');
-            console.log(typeof elem);
-            let e = M.Collapsible.getInstance(0);
-            console.log(typeof e);
-            e.close(0);
-            console.log(e.options);
         }
     },
     mounted() {
