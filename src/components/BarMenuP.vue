@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul v-show="!$auth.loading" class="sidenav sidenav-fixed #e53935 red darken-1" id="menu">
-            <ul v-show="!$auth.isAuthenticated">
+            <ul v-show="$auth.isAuthenticated">
                 <ul class="collapsible">
                     <li>
                         <a class="collapsible-header btn">Liste</a>
@@ -19,7 +19,7 @@
                         <div class="collapsible-body #e53935 red darken-1">
                             <ul>
                                 <li><a href="#modal2"
-                                       class="waves-effect waves-light btn modal-trigger Personalisation sidenav-close">Nouvelle</a>
+                                       class="waves-effect waves-light btn modal-trigger Personalisation sidenav-close" v-on:click="NewG">Nouvelle</a>
                                 </li>
                                 <li><a href="#!" class="btn Personalisation sidenav-close">Afficher</a></li>
                             </ul>
@@ -44,7 +44,7 @@
             </ul>
         </ul>
         <new-list/>
-        <new-group/>
+        <new-group ref="NG"/>
 
     </div>
 </template>
@@ -68,6 +68,9 @@ export default {
             this.$auth.logout({
                 returnTo: window.location.origin
             });
+        },
+        NewG(){
+            this.$refs.NG.init();
         }
     },
     mounted() {

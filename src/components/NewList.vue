@@ -45,7 +45,11 @@ export default {
                 M.toast({html: "Veuillez renseigner le nom de la liste." ,classes: 'red grey-text text-darken-4'});
             }
             else
-                drag.upload(nom.value)
+            {
+                drag.upload(nom.value);
+                nom.value = "";
+            }
+
         },
         close(){
             this.$refs.nom.value = ""

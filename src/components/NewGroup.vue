@@ -122,6 +122,7 @@
 </template>
 <script>
 import M from "materialize-css";
+import axios from "axios";
 
 export default {
     name: "NewGroup",
@@ -130,11 +131,7 @@ export default {
     },
     data() {
         return {
-            optionsList : [
-                {name:"liste 1",source:"1"},
-                {name:"liste 2",source:"2"},
-                {name:"liste 3",source:"3"},
-            ],
+            optionsList : [],
             foods: [
                 {text: "Select One", value: null},
                 "Carrots",
@@ -162,6 +159,21 @@ export default {
             this.$nextTick(() => {
                 this.show = true;
             });
+        },
+        async init(){
+            let formData = new FormData();
+            formData.append("email", this.$auth.user.email);
+            try {
+                await axios.post("/name/liste", formData)
+                    . then ( donnees  =>  console . log (donnees));
+
+            } catch (err) {
+                console.log("retour : " + err.message);
+                M.toast({
+                    html: err.response.data.error,
+                    classes: "red grey-text text-darken-4"
+                });
+            }
         }
     }
 };

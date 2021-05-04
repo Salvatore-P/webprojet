@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import BarMenuP from '../components/BarMenuP.vue'
-//import { authGuard } from "../auth/authGuard";
+import { authGuard } from "../auth/authGuard";
 Vue.use(VueRouter)
 
 const routes = [
@@ -9,7 +9,7 @@ const routes = [
     path: '/',
     name: 'BarMenuP',
     component: BarMenuP,
-    //beforeEnter: authGuard
+    beforeEnter: authGuard
   }
 ]
 

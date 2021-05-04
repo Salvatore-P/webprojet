@@ -58,8 +58,7 @@ export default {
       } else {
         let formData = new FormData();
         formData.append("file", this.fichier);
-        //formData.append("email", this.$auth.user.email);
-        formData.append("email", "mohamadoud28@gmail.com");
+        formData.append("email", this.$auth.user.email);
         formData.append("titre", titre);
         try {
           await axios.post("/upload/liste", formData);
@@ -67,9 +66,8 @@ export default {
             html: "Le fichier a bien été uploadé",
             classes: "light-green accent-3 grey-text text-darken-4"
           });
-          //this.fichier = null;
+          this.fichier = null;
         } catch (err) {
-          console.log("retour : " + err.message);
           M.toast({
             html: err.response.data.error,
             classes: "red grey-text text-darken-4"

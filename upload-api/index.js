@@ -52,20 +52,21 @@ let insersion = (requete) =>{
             if(e)
                 return false
             else{
+                console.log("taille result selection:" + result.length)
                 resulatRequete = result
+                console.log("taille result selection:" + resulatRequete.length)
                 return true
             }
         })
     }
 //`SELECT * FROM users_listes WHERE email = '${email}' AND titre = '${titre}'`
 //`INSERT INTO users_listes values(null, '${email}', '${titre}', '${fichier}')`
-app.post("/upload/liste", upload.single("file"), (req, res) =>{
+app.post("/upload/liste", upload.single("file"), async (req, res) =>{
     let email = req.body.email, 
         titre = req.body.titre, 
         fichier = req.file.filename
 
-    console.log("dlskjdfl : " + selection(`SELECT * FROM users_listes WHERE email = '${email}' AND titre = '${titre}'`))
-    if(selection(`SELECT * FROM users_listes WHERE email = '${email}' AND titre = '${titre}'`)){
+    if(await selection(`SELECT * FROM users_listes WHERE email = '${email}' AND titre = '${titre}'`)){
         if(resulatRequete.length === 0){
             if(insersion(`INSERT INTO users_listes values(null, '${email}', '${titre}', '${fichier}')`)){
                 res.json({donnees : "ok"})
@@ -86,22 +87,27 @@ app.post("/upload/liste", upload.single("file"), (req, res) =>{
     }
 })
 
-app.post("/liste", upload.array("file"), (req, res) =>{
-    console.log("tab recu");
-    console.log(req.files);
-    console.log(req.id);
-    res.json({"hello" : "nice"});
+app.post("/name/liste", upload.single("email"), (req, res,next) =>{
+    let email = req.body.email
+    selection(`SELECT id,titre FROM users_listes WHERE email = '${email}'`)
+    next()
+    /*if(selection(`SELECT id,titre FROM users_listes WHERE email = '${email}'`)){
+        console.log("taille result dans if :" + resulatRequete.length)
+        if(resulatRequete.length === 0){
+            console.log(resulatRequete[0].titre)
+            res.status(422)
+                .json({error : "probleme base de données"})
 
-});
-
-let cpUpload = upload.fields([{ name: 'file', maxCount: 1 }, { name: 'info', maxCount: 1 }]);
-app.post('/cool', cpUpload, function (req, res, next) {
-    console.log("fields recu");
-    console.log(req.files['file'][0]);
-    console.log(req.files['info']);
-    res.json({"hello" : "nice"});
+        }
+        else{
+            res.json({donnees : resulatRequete})
+        }
+    }
+    else{
+        res.status(422)
+            .json({error : "probleme base de données"})
+    }*/
 })
-
 app.use(function (err,req,res,next){
     if(err.code == "LIMIT_FILE_TYPES"){
         res.status(422).json({error : "Fichier de type excel uniquement"});
