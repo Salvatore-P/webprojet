@@ -9,7 +9,7 @@
             <form class="col s12">
                 <div class="row">
                     <div class="input-field col s6">
-                        <input id="name-list" type="text" class="validate">
+                        <input id="name-list" ref="nom" type="text" class="validate">
                         <label for="name-list">Nom de la liste</label>
                     </div>
                 </div>
@@ -39,7 +39,13 @@ export default {
     },
     methods:{
         upload(){
-            this.$refs.drag.upload();
+            let nom = this.$refs.nom;
+            let drag = this.$refs.drag
+            if(nom.value == ''){
+                M.toast({html: "Veuillez renseigner le nom de la liste." ,classes: 'red grey-text text-darken-4'});
+            }
+            else
+                drag.upload(nom.value)
         },
         close(){
             this.$refs.drag.fichier = null;

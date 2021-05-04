@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul v-show="!$auth.loading" class="sidenav sidenav-fixed #e53935 red darken-1" id="menu">
-            <ul v-show="$auth.isAuthenticated">
+            <ul v-show="!$auth.isAuthenticated">
                 <ul class="collapsible">
                     <li>
                         <a class="collapsible-header btn">Liste</a>

@@ -8,7 +8,8 @@ let app = express(),
     db = mysql.createConnection({
         host: "localhost",
         user: "root",
-        password: ""
+        password: "",
+        database: "bdheplmanager"
     })
 
 db.connect( e => {
@@ -34,12 +35,15 @@ let upload = multer({
 })
 
 
-app.post("/Fichierliste", upload.single("file"), (req, res) =>{
-    console.log(req.body.info);
-    db.query("SELECT * FROM Users", (e, result) => {
+app.post("/upload/liste", upload.single("file"), (req, res) =>{
+    let email = req.body.email, 
+        titre = req.body.titre, 
+        fichier = req.file.filename
+    db.query(`INSERT INTO users_listes values(null, '${email}', '${titre}', '${fichier}')`, (e, result) => {
         if(e){
-            res.status(404)
+            res.status(400)
             res.send("Echec recuperation données")
+            console.log("probleme requete")
         }
         else{
             console.log("donnees recuperees !")

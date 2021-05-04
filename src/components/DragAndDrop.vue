@@ -1,31 +1,37 @@
 <template>
-    <div>
-        <div class="row">
-            <div class="col s12">
-                <div class="card-panel teal">
-                    <div @dragover="dragover" @dragleave="dragleave" @drop="drop">
-                        <input type="file" name="FichierListe" id="assetsFieldHandle"
-                               @change="onChange" ref="liste" accept=".xls,.xlsx"/>
+  <div>
+    <div class="row">
+      <div class="col s12">
+        <div class="card-panel teal">
+          <div @dragover="dragover" @dragleave="dragleave" @drop="drop">
+            <input
+              type="file"
+              name="FichierListe"
+              id="assetsFieldHandle"
+              @change="onChange"
+              ref="liste"
+              accept=".xls,.xlsx"
+            />
 
-                        <label for="assetsFieldHandle">
-                            <div class="row">
-                                <h6> Glisser un fichier (*.csv,*.xls,*.xlsx) ou <h5>appuyer</h5> pour charger votre
-                                    liste.
-                                </h6>
-                            </div>
-                        </label>
-                        <div v-if="erreur != null" class="namefichier valign-wrapper red">
-                            {{message}}
-                        </div>
-                        <div v-if="fichier != null" class="namefichier valign-wrapper">
-                            {{fichier.name}} <i class="material-icons close" @click="remove">highlight_off</i>
-                        </div>
-                    </div>
-                </div>
+            <label for="assetsFieldHandle">
+              <div class="row">
+                <h6>
+                  Glisser un fichier (*.csv,*.xls,*.xlsx) ou
+                  <h5>appuyer</h5>
+                  pour charger votre liste.
+                </h6>
+              </div>
+            </label>
+            
+            <div v-if="fichier != null" class="namefichier valign-wrapper">
+              {{ fichier.name }}
+              <i class="material-icons close" @click="remove">highlight_off</i>
             </div>
+          </div>
         </div>
-
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -37,28 +43,29 @@ export default {
     data() {
         return {
             fichier: null,
-            erreur: false,
-            message: null
         }
     },
     mounted(){
         M.AutoInit();
     },
     methods: {
-        async upload() {
-            let formData = new FormData();
-            formData.append("file", this.fichier);
-            formData.append("info", "002");
-            try {
-                await axios.post("/Fichierliste", formData)
-                    .then(data => console.log(data));
-                //await axios.post("/liste", formData);
-                //await axios.post("/cool", formData);
-                M.toast({html: 'Le fichier a bien été uploadé',classes: 'light-green accent-3 grey-text text-darken-4'});
-                this.fichier = null;
-                this.$refs.liste.files[0] = null;
-            } catch (err) {
-                M.toast({html: err.response.data.error ,classes: 'red grey-text text-darken-4'});
+        async upload(titre) {
+            if(this.fichier === null){
+                M.toast({html: "Veuillez selectionner un fichier." ,classes: 'red grey-text text-darken-4'});
+            }
+            else{
+                let formData = new FormData();
+                formData.append("file", this.fichier);
+                //formData.append("email", this.$auth.user.email);
+                formData.append("email", "mohamadoud28@gmail.com");
+                formData.append("titre", titre);
+                try {
+                    await axios.post("/upload/liste", formData)
+                    M.toast({html: 'Le fichier a bien été uploadé',classes: 'light-green accent-3 grey-text text-darken-4'});
+                    this.fichier = null;
+                } catch (err) {
+                    M.toast({html: err.response.data.error ,classes: 'red grey-text text-darken-4'});
+                }
             }
 
 
@@ -66,15 +73,12 @@ export default {
         },
         onChange() {
             this.fichier = this.$refs.liste.files[0];
-            this.erreur = false;
-            this.message = null;
+            
             let type = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/vnd.ms-excel"];
 
             if(!type.includes(this.fichier.type)){
-                console.log("erreur");
-                this.erreur = true;
                 this.fichier = null;
-                this.message = "Fichier de type excel uniquement";
+                M.toast({html: "Fichier de type excel uniquement" ,classes: 'red grey-text text-darken-4'});
             }
         },
         remove() {
@@ -106,38 +110,37 @@ export default {
 </script>
 
 <style scoped>
-
 .file-wrapper input {
-    position: absolute;
-    top: 0;
-    right: 0;
-    /* not left, because only the right part of the input seems to
+  position: absolute;
+  top: 0;
+  right: 0;
+  /* not left, because only the right part of the input seems to
                     be clickable in some browser I can't remember */
-    cursor: pointer;
-    opacity: 0.0;
-    filter: alpha(opacity=0);
-    /* and all the other old opacity stuff you
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  /* and all the other old opacity stuff you
                                     want to support */
-    font-size: 300px;
-    /* wtf, but apparently the most reliable way to make
+  font-size: 300px;
+  /* wtf, but apparently the most reliable way to make
                             a large part of the input clickable in most browsers */
-    height: 200px;
+  height: 200px;
 }
 
 #assetsFieldHandle {
-    display: none;
+  display: none;
 }
 
-h5, h6 {
-    color: black;
-    text-align: center;
+h5,
+h6 {
+  color: black;
+  text-align: center;
 }
-.namefichier{
-    justify-content: center;
+.namefichier {
+  justify-content: center;
 }
-.close{
-    cursor: pointer;
-    margin-left: 5px;
+.close {
+  cursor: pointer;
+  margin-left: 5px;
 }
-
 </style>
